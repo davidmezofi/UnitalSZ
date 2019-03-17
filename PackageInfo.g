@@ -84,6 +84,7 @@ Dependencies := rec(
     NeededOtherPackages := [
         [ "GAPDoc", ">= 1.6" ],
         [ "Digraphs", ">= 0.11" ],
+        [ "GRAPE", ">= 4.8.1" ],
         [ "io", ">=4.5" ]
     ],
     SuggestedOtherPackages := [ ],
