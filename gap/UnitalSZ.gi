@@ -205,7 +205,7 @@ InstallMethod( AutomorphismGroup, "for an abstract unital",
 function( u )
     local incdigraph, g;
     incdigraph := ShallowCopy( IncidenceDigraph( u ) );
-    g := AutomorphismGroup( incdigraph );
+    g := AutGroupGraph( incdigraph );
     return Action( g, [ 1..Order( u )^3 + 1 ] );
 end );
 
