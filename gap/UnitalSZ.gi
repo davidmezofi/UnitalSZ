@@ -182,11 +182,11 @@ InstallMethod( IncidenceDigraph, "for an abstract unital",
 function( u )
     local q;
     q := Order( u );
-    return Digraph( [ 1..q^3 + 1 + q^2 * ( q^2 - q + 1 ) ],
-                    function( x, y )
-                        return x <= q^3 + 1 and y > q^3 + 1 and
-                               u!.bmat[ y - q^3 - 1 ][ x ];
-                    end );
+    return Graph( Group(()), [ 1..q^3 + 1 + q^2 * ( q^2 - q + 1 ) ], OnPoints,
+                  function( x, y )
+                      return x <= q^3 + 1 and y > q^3 + 1 and
+                             u!.bmat[ y - q^3 - 1 ][ x ];
+                  end, true );
 end );
 
 ###############################################################################
@@ -203,20 +203,22 @@ end );
 InstallMethod( AutomorphismGroup, "for an abstract unital",
     [ IsAbstractUnitalDesign ],
 function( u )
-    local g;
-    g := AutomorphismGroup( IncidenceDigraph( u ) );
+    local incdigraph, g;
+    incdigraph := ShallowCopy( IncidenceDigraph( u ) );
+    g := AutomorphismGroup( incdigraph );
     return Action( g, [ 1..Order( u )^3 + 1 ] );
 end );
 
 InstallMethod( Isomorphism, "for two abstract unitals",
     [ IsAbstractUnitalDesign, IsAbstractUnitalDesign ],
     function( u1, u2 )
-        local ret;
+        local incdigraph1, incdigraph2, ret;
         if Order( u1 ) <> Order( u2 ) then
             return fail;
         fi;
-        ret := IsomorphismDigraphs( IncidenceDigraph( u1 ),
-                                    IncidenceDigraph( u2 ) );
+        incdigraph1 := ShallowCopy( IncidenceDigraph( u1 ) );
+        incdigraph2 := ShallowCopy( IncidenceDigraph( u2 ) );
+        ret := GraphIsomorphism( incdigraph1, incdigraph2 );
         if ret = fail then
             return fail;
         else
